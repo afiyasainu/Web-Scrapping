@@ -1,0 +1,31 @@
+import requests
+from bs4 import BeautifulSoup
+import re
+
+def extract_sentences(url):
+    try:
+        # Send an HTTP request to the URL
+        response = requests.get(url)
+        response.raise_for_status()  # Check for request errors
+        
+        # Parse the website's HTML content
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Extract all text content
+        text = soup.get_text()
+        
+        # Split the text into sentences using regex
+        sentences = re.split(r'(?<=[.!?]) +', text)
+        
+        # Print the extracted sentences
+        for i, sentence in enumerate(sentences, 1):
+            print(f"{i}: {sentence}")
+        
+        return sentences
+    except Exception as e:
+        print("Error:", e)
+        return None
+
+# Replace 'YOUR_URL_HERE' with the URL you want to scrape
+url = "https://medium.com/@siddheshb008/web-scraping-28be42832d40"
+extract_sentences(url)
